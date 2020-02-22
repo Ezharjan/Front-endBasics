@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/three.js"></script>
+</head>
+
+<body onload="init()">
+    <script>
+        function init() {
+
+            //不使用HTML先前定义的画布而是直接为渲染器设置大小
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(1200, 900);
+            document.getElementsByTagName('body')[0].appendChild(renderer.domElement);
+
+            renderer.setClearColor(0x000000);//将用于清除画面的颜色设置为黑色
+
+            var scene = new THREE.Scene();
+
+            //定义一个直透视投影的摄像机
+            var camera = new THREE.PerspectiveCamera(45, 4 / 3, 1, 1000);
+            camera.position.set(3, 1, 5);
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+            //在场景中加载摄像机
+            scene.add(camera);
+
+            //创建一个x、y、z方向长度分别为1、2、3的长方体，并将其设置为红色；数值没有具体单位，是虚拟坐标空间。
+            var cube = new THREE.Mesh(new THREE.CubeGeometry(1, 2, 3), new THREE.MeshBasicMaterial({ color: 0xff0000 }));
+
+            //在场景中加载物体
+            scene.add(cube);
+
+            //渲染场景
+            renderer.render(scene, camera);
+        }
+
+
+    </script>
+</body>
+
+</html>

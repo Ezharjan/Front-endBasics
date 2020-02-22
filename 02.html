@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/three.js"></script>
+</head>
+
+<body onload="init()">
+    <!-- 第一种方式：在HTML中定义画布大小 -->
+    <!-- <canvas id="mainCanvas" width="400px" height="300px"></canvas> -->
+    <script>
+
+        //三要素：Renderer、Scene、Camera
+
+        function init() {
+            //在加载初期就执行
+        }
+
+        //使用HTML中定义的画布
+        //var renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('mainCanvas') });
+
+        //不使用HTML先前定义的画布而是直接为渲染器设置大小
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(1200, 900);
+        document.getElementsByTagName('body')[0].appendChild(renderer.domElement);
+
+        renderer.setClearColor(0x000000);//将用于清除画面的颜色设置为黑色
+
+        //创建场景
+        var scene = new THREE.Scene();
+
+        //定义一个直透视投影的摄像机
+        var camera = new THREE.PerspectiveCamera(45, 4 / 3, 1, 1000);
+        camera.position.set(0, 0, 5);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+        //在场景中加载摄像机
+        scene.add(camera);
+
+        //定义物体材质
+        var materialT = new THREE.MeshBasicMaterial({
+            // color: 0xffffff
+            color: 0x990000
+        });
+        var materialS = new THREE.MeshBasicMaterial({
+            // color: 0xffffff
+            color: 0x009900
+        });
+
+        //定义正方形
+        var planeGeo = new THREE.PlaneGeometry(1.5, 1.5);
+        var plane = new THREE.Mesh(planeGeo, materialS);
+        plane.position.x = 1;
+
+        // 在场景中载入正方形物体
+        scene.add(plane);
+        var triGeo = new THREE.Geometry();
+
+        //定义三角性物体
+        triGeo.vertices = [new THREE.Vector3(0, -0.8, 0), new THREE.Vector3(-2, -0.8, 0), new THREE.Vector3(-1, 0.8, 0)];
+        triGeo.faces.push(new THREE.Face3(0, 2, 1));
+        var triangle = new THREE.Mesh(triGeo, materialT);
+
+        // 在场景中载入三角形物体
+        scene.add(triangle);
+
+        //渲染场景
+        renderer.render(scene, camera);
+
+    </script>
+</body>
+
+</html>

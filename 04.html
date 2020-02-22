@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/three.js"></script>
+</head>
+
+<body onload="init()">
+    <script>
+        function init() {
+
+            //不使用HTML先前定义的画布而是直接为渲染器设置大小
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(1200, 900);
+            document.getElementsByTagName('body')[0].appendChild(renderer.domElement);
+
+            renderer.setClearColor(0x000000);
+            var scene = new THREE.Scene();
+
+            // camera
+            var camera = new THREE.OrthographicCamera(-2, 2, 1.5, -1.5, 1, 10);
+            camera.position.set(-5, -6, 2);
+            camera.lookAt(new THREE.Vector3(1, 1, 1));
+            scene.add(camera);
+
+            // a cube in the scene
+            var cube = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1),
+                new THREE.MeshBasicMaterial({
+                    color: 0xff0000,
+                    wireframe: true
+                })
+            );
+            scene.add(cube);
+
+            // render
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+
+</html>
