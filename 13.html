@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form>
+        <li>
+            邮箱：<input type="email">
+        </li>
+        <li>
+            手机：<input type="tel" autocomplete="on">
+            <!-- 实际上电脑端不起社么么卵用，还需要后续服务端对接收到的数据进行验证 -->
+            <!-- 如果需要一个用来填写电话号码的输入框，可以使用tel类型。
+                这个在移动浏览器中使用很方便，会自动使用只包含数字和符号，没有字母的虚拟键盘。 -->
+        </li>
+
+        <li>
+            <!-- autocomplete会自动存储上次输入过的内容，就是浏览器中的自主密码功能；但是不要有name属性。 -->
+            Text：<input type="text" name="使用autocomplete必须要有name属性" autocomplete="on">
+        </li>
+
+
+
+        <li>
+            Number: <input type="number" required="required" placeholder="这是占位提示符">
+            <!-- 只能输入数字，e作为科学计数符也在其中;require——内容不能为空。 -->
+        </li>
+
+
+        <li>
+            上传头像：（一次只能选一个文件） <input type="file" name="" id="">
+        </li>
+
+        <li>
+            上传多个文件[重要！！！]：（使用multiple） <input type="file" name="" id="" multiple="multiple">
+        </li>
+        <li>
+
+            Auto: <input type="date" required="required" autofocus="autofocus">
+        </li>
+        <li>
+            <input type="submit" value="提交">
+        </li>
+    </form>
+
+</body>
+
+</html>

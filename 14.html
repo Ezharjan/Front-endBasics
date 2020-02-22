@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button {
+            /* 鼠标边成小手 */
+            cursor: pointer;
+        }
+
+        /* 属性选择器使用方法 鼠标经过下方被禁用的按钮会回到原来的箭头状态*/
+        /* 属性选择器、类选择器、伪类选择器权重都是：10 */
+        button[disabled] {
+            cursor: default;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 禁用button -->
+    <button disabled="disabled">AA</button>
+
+    <button>BB</button>
+    <button>CC</button>
+    <button>DD</button>
+
+</body>
+
+</html>
