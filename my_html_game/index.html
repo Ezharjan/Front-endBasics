@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work01</title>
+    <div id="app">
+        <canvas id="mainCanvas" class="mycanvas" width="400px" height="400px"></canvas>
+        <!-- <img src="assests/star.png" id="startImage" class="startframe"></img> -->
+        <audio src="assests/explode.mp3" preload="auto" id="explode_sound"></audio>
+        <audio src="assests/bgMusic.mp3" preload="auto" id="bg_music"></audio>
+        <audio src="assests/failed.mp3" preload="auto" id="failed_music"></audio>
+        <audio src="assests/danger.mp3" preload="auto" id="danger_music"></audio>
+        <audio src="assests/succeed.wav" preload="auto" id="succeed_music"></audio>
+        <script src="KeyCodeEnum.js"></script>
+        <script src="ColorEnum.js"></script>
+    </div>
+    <style>
+        .mycanvas {
+            display: block;
+            margin: auto auto;
+            background-color: bisque;
+            opacity: 1;
+        }
+
+        .startframe {
+            display: block;
+            margin: auto auto;
+            background-color: bisque;
+            opacity: 1;
+        }
+
+        body {
+            margin: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+
+        //// Interction --- Waiting to be optimized!!!
+        var rightPressed = false;
+        var leftPressed = false;
+        var upPressed = false;
+        var downPressed = false;
+        var spacePressed = false;
+        var escPressed = false;
+        var wPressed = false;
+        var pPressed = false;
+
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+        document.addEventListener('mousewheel', mouseWheel, false);
+        document.addEventListener("mousemove", mouseMoveHandler, false);
+
+
+        //---The cohesiveness of the two functions below is too high!
+        function keyDownHandler(e) {
+            if (e.keyCode == KeyCode.RightArrow) {
+                console.log("right pressed!");
+                rightPressed = true;
+            }
+            else if (e.keyCode == KeyCode.LeftArrow) {
+                console.log("left pressed!");
+                leftPressed = true;
+            }
+            else if (e.keyCode == KeyCode.UpArrow) {
+                console.log("up pressed!");
+                upPressed = true;
+            }
+            else if (e.keyCode == KeyCode.DownArrow) {
+                console.log("down pressed!");
+                downPressed = true;
+            }
+            else if (e.keyCode == KeyCode.Space) {
+                console.log("space pressed!");
+                spacePressed = true;
+            }
+            else if (e.keyCode == KeyCode.W) {
+                console.log("W pressed!");
+                wPressed = true;
+            }
+            else if (e.keyCode == KeyCode.Esc) {
+                console.log("Esc pressed!");
+                escPressed = true;
+            }
+            else if (e.keyCode == KeyCode.P) {
+                console.log("Esc pressed!");
+                pPressed = true;
+            }
+        }
+
+        function keyUpHandler(e) {
+            if (e.keyCode == KeyCode.RightArrow) {
+                rightPressed = false;
+            }
+            else if (e.keyCode == KeyCode.LeftArrow) {
+                leftPressed = false;
+            }
+            else if (e.keyCode == KeyCode.UpArrow) {
+                upPressed = false;
+            }
+            else if (e.keyCode == KeyCode.DownArrow) {
+                downPressed = false;
+            }
+            else if (e.keyCode == KeyCode.Space) {
+                spacePressed = false;
+                console.log("kkkk");// Bug!!!!!
+            }
+            else if (e.keyCode == KeyCode.W) {
+                wPressed = false;
+            }
+            else if (e.KeyCode == KeyCode.Esc) {
+                escPressed = false;
+                console.log("kkkk");// Bug!!!!!
+            }
+            else if (e.keyCode == KeyCode.P) {
+                pPressed = false;
+            }
+        }
+
+        function mouseMoveHandler(e) {
+            //TODO: Detect collision with player and move it if left is down
+            console.log(e.clientX + "   " + e.clientY);
+        }
+
+        function mouseWheel(e) {
+            //Make the camera field of view always spot on center 
+            if (e.wheelDelta) {// for Google & IE browser
+                if (e.wheelDelta > 0) { //wheel up
+                    //Google wheel unit range is (-150,150)
+                    console.log("Mouse wheel pushed " + e.wheelDelta + "in Opera/Google/IE browser");
+                }
+                if (e.wheelDelta < 0) { //wheel down
+                    console.log("Mouse wheel draged " + e.wheelDelta + "in Opera/Google/IE browser");
+                }
+            }
+            else if (e.detail) {  //for Firefox browser
+                if (e.detail > 0) { //wheel up 
+                    //Firefox wheel unit range is (-3,3)
+                    console.log("Mouse wheel pushed " + e.detail + "in FireFox browser");
+                }
+                if (e.detail < 0) { //wheel down
+                    console.log("Mouse wheel draged " + e.detail + "in FireFox browser");
+                }
+            }
+        }
+
+        function interaction() {
+            // Avoid going out of the canvas  
+            if (rightPressed && playerX < canvas.width - playerWidth) {
+                playerX += 3;
+                interacted = true;
+            }
+            else if (leftPressed && playerX > 0) {
+                playerX -= 3;
+                interacted = true;
+            }
+            else if (downPressed && playerY < canvas.height - playerHeight) {
+                playerY += 3;
+                interacted = true;
+            }
+            else if (upPressed && playerY > 0) {
+
+                playerY -= 3;
+                interacted = true;
+
+
+                //TODO:Move up to find the destanation area
+
+
+            }
+            else if (spacePressed) {
+
+                document.getElementById('bg_music').play();
+
+
+                console.log("random number : " + Math.random());
+                console.log("random number * 10 --- floor : " + Math.floor(Math.random() * 10));
+                console.log("random number * 10 --- ceil : " + Math.ceil(Math.random() * 10));
+
+            }
+            else if (escPressed) {
+
+
+                //Test and learn
+                var c = document.getElementById("mainCanvas");
+                var ctx = c.getContext("2d");
+                ctx.fillStyle = "green";
+                ctx.fillRect(10, 10, 50, 50);
+
+                function copy() {
+                    var imgData = ctx.getImageData(10, 10, 50, 50);
+                    ctx.putImageData(imgData, 10, 70);
+                }
+
+
+
+                //copy();
+
+                ctx.moveTo(0, 0);
+                ctx.lineTo(200, 100);
+                ctx.lineTo(300, 100);
+                ctx.stroke();
+
+                // create linear color
+                // var grd = ctx.createLinearGradient(0, 0, 200, 0);
+                // grd.addColorStop(0, "red");
+                // grd.addColorStop(1, "white");
+                // ctx.fillStyle = grd;
+                // ctx.fillRect(10, 10, 150, 80);
+                var grd = ctx.createRadialGradient(75, 50, 5, 90, 60, 100);
+                grd.addColorStop(0, "red");
+                grd.addColorStop(1, "white");
+                ctx.fillStyle = grd;
+                ctx.fillRect(10, 10, 150, 80);
+
+                ctx.font = "30px Arial";
+                ctx.strokeText("Hello World", 10, 50);
+
+
+
+                //gameEndClear(gameEndBGColor);//Bug!!!!
+
+
+
+
+                //TODO: Pause game
+                console.log("Game paused!");
+            }
+            else if (wPressed) {
+                moveBubleBG(3);
+            }
+            else if (pPressed) {
+                document.getElementById('bg_music').pause();
+            }
+
+        }
+
+
+
+        //// Game
+
+        // Customized API for user 
+        var clearColor = Color.BISQUE;
+        var gameEndBGColor = Color.WHITE_BLUE;
+        var playerColor = Color.SKY_BLUE;
+        var destinationColor = Color.DARK_BLUE;
+        var infoColor = Color.DARK_BLUE;
+        var lives = 5;
+
+        // Internal settings
+        var isLoadable = false;//Load game after start image vanishes
+        var assestsLoadedTime = 2;//unit: econds
+        var gameOver = false;
+        var canvas = document.getElementById("mainCanvas");
+        var ctx = canvas.getContext("2d");
+        var pixelPosX = canvas.width / 2;
+        var pixelPosY = canvas.height - 30;
+        var playerHeight = 20;
+        var playerWidth = 20;
+        var destinationHeight = 20;
+        var destinationWidth = 20;
+        var enemyRadius = 10;
+        var destinationX = (Math.floor(Math.random() * (canvas.width - destinationWidth - 1)));
+        var destinationY = (Math.floor(Math.random() * (canvas.height - destinationHeight - 1)));
+        var level = 1;
+
+        // Make the Origin point at the center of the player
+        var playerX = (canvas.width / 2 - enemyRadius * (18 - level));
+        var playerY = (canvas.height / 2 - enemyRadius * (18 - level));
+
+        var rightPressed = false;
+        var leftPressed = false;
+        var enemyCount = 5;
+        var enemies = [];
+        var score = 0;
+
+        // Load starting image or logos 
+        var startImage = new Image();
+        startImage.src = "assests/welcome.png";
+        var originalImageData = null;
+        var interval = null;
+
+
+        function loadGame() {
+            fadeOut(ctx, ctx.getImageData(0, 0, canvas.width, canvas.height), 0, 0, assestsLoadedTime * 9, assestsLoadedTime * 18);
+        }
+
+        function loadStartImage() {
+            ctx.drawImage(startImage, 0, 0, startImage.width, startImage.height, 0, 0, canvas.width, canvas.height);
+        };
+
+        startImage.onload = function () {
+            loadStartImage();
+            originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        }
+
+        function fadeOut(context, imageData, pixelPosX, pixelPosY, steps, millisecondsPerStep) {
+            var frame = 0;
+            var length = imageData.data.length;
+
+            interval = setInterval(function () {
+                frame++;
+                if (frame > steps) {
+                    clearInterval(interval);
+                    loadingComplete();//Inform the state
+                } else {
+                    increaseTransperency(imageData, steps);
+                    context.putImageData(imageData, pixelPosX, pixelPosY);
+                }
+            }, millisecondsPerStep);
+        }
+
+        function increaseTransperency(imageData, steps) {
+            var alpha;
+            var currentAlpha;
+            var alphaStep;
+            var length = imageData.data.length;
+
+            for (var i = 3; i < length; i += 4) {
+
+                alpha = originalImageData.data[i];
+
+                if (alpha > 0 && imageData.data[i] > 0) {
+                    currentAlpha = imageData.data[i];
+                    alphaStep = Math.ceil(alpha / steps);
+                    if (currentAlpha - alphaStep > 0) {
+                        imageData.data[i] -= alphaStep;
+                    }
+                    else {
+                        imageData.data[i] = 0;
+                    }
+                }
+            }
+        }
+
+        function drawPlayer(customColor) {
+            ctx.beginPath();
+            ////rect(xLeftUpPointOfRectangle,yLeftUpPointOfRectangle,widthOfRectangle,heightOfRectangle)
+            ctx.rect(playerX, playerY, playerWidth, playerHeight);
+            ctx.fillStyle = customColor;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+
+
+        function drawDestination(customColor) {
+            ctx.beginPath();
+            ////rect(xLeftUpPointOfRectangle,yLeftUpPointOfRectangle,widthOfRectangle,heightOfRectangle)
+
+            ctx.rect(destinationX, destinationY, destinationWidth, destinationHeight);
+            ctx.fillStyle = customColor;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        // function drawDestinationRunner(customColor) {
+        //     ctx.beginPath();
+        //     ////rect(xLeftUpPointOfRectangle,yLeftUpPointOfRectangle,widthOfRectangle,heightOfRectangle)
+
+        //     var posX = 50;
+        //     var posY = 50;
+        //     var width = 15;
+        //     var height = 15;
+        //     //if (posX <= canvas.width) {
+        //     // posX += 1;
+        //     //}
+        //     // else {
+        //     //     posX = 0;
+        //     // }
+        //     // if (posY < canvas.height) {
+        //     //     posY += 0.07;
+        //     // }
+        //     // else {
+        //     //     posY -= 0.07;
+        //     // }
+        //     // if (width <= 100 || height <= 100) {
+        //     //     width += 0.1;
+        //     //     height += 0.1;
+        //     // }
+
+        //     ctx.rect(posX++, posY++, width++, height++);
+        //     ctx.rect(100, 100, 45, 45);
+        //     ctx.fillStyle = customColor;
+        //     ctx.fill();
+        //     ctx.closePath();
+        // }
+
+
+        var interacted = false;
+        // function userInteracted() {
+
+        //     if (upPressed || downPressed || rightPressed || leftPressed) {
+        //         interacted = true;
+        //     }
+        //     else {
+        //         interacted = false;
+        //     }
+        // }
+        // setInterval(userInteracted, 1000);
+
+
+        function raiseChallengeByBall() {
+            switch (level) {
+                case 1:
+                    enemyRadius += 0.1;
+                    if (interacted) {
+
+                        // document.getElementById('danger_music').play();
+
+                    }
+                    break;
+                case 2:
+                    enemyRadius += 0.3;
+                    break;
+                case 3:
+                    enemyRadius += 0.5;
+                    break;
+                case 4:
+                    enemyRadius += 0.7;
+                    break;
+                case 5:
+                    enemyRadius += 0.9;
+                    break;
+                case 6:
+                    enemyRadius += 1.1;
+                    break;
+                case 7:
+                    enemyRadius += 1.3;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+
+        function drawBall() {
+            ctx.beginPath();
+
+            raiseChallengeByBall();
+
+            ////rect(xLeftUpPointOfRectangle,yLeftUpPointOfRectangle,widthOfRectangle,heightOfRectangle)
+            ctx.arc(canvas.width / 2, canvas.height / 2, enemyRadius, 0, Math.PI * 2);
+            ctx.fillStyle = Color.PURE_RED; //Color.VioletRed4;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function collisionDetection() {
+
+            ////Detect player's collision with the danderous area
+            //Bug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            if (
+                Math.sqrt(((playerX - canvas.width / 2) * (playerX - canvas.width / 2)
+                    - (playerY - canvas.height / 2) * (playerY - canvas.height / 2))) < enemyRadius
+            ) {
+
+                console.log("Lose!");
+                if (interacted) {
+                    document.getElementById('failed_music').play();
+                    gameOver = true;
+                    alert("Sorry but you have lost the game! \n\nHit F5 to play again! ")
+                    // document.getElementById('bg_music').stop();
+                    // document.getElementById('danger_music').stop();
+                }
+
+            }
+
+            //Bug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+            ////Detect player's collision with the destanation
+            // Collision dectection Way 1 --- Let destination area carries a collider box for easier detection
+            if (
+                (playerX >= (destinationX - playerWidth)
+                    && playerX <= (destinationX + destinationWidth))
+                && (playerY >= (destinationY - destinationHeight)
+                    && (playerY <= destinationY + destinationHeight))
+            ) {
+                console.log("Win!");
+
+                //TODO:Inform the player for wining and raise the level before loading to higher level 
+                score += 10;
+                level += 1;
+
+
+                if (interacted) {
+                    document.getElementById('succeed_music').play();
+                    gameOver = true;
+                    alert("Congradulations on wining the game! \n\nHit F5 to play again! ");
+                    // document.getElementById('bg_music').stop();
+                    // document.getElementById('danger_music').stop();
+                }
+
+
+
+
+                /**
+                 * WARN:(before doing next)
+                 * 1. Store the player's score and level information for next-play-needs;
+                 * 2. Clear the scene and the score still adds based on pre-level;
+                 * 3. The radius increase of the dangerous area will be increased according to level;
+                 * 4. The dangerous area should randomlly created on differents parts of canvas;
+                 * 5. The dangerous area should be composed of mutiple balls rather than only one;
+                 * 6. The dangerous areas can be overlaped with each other;
+                 * 7. The overlap of dangerous areas, the spawn position of detination 
+                 *    and along with the spawn position of the player should be in mathematical way
+                 *    only to prevent wierd circumstances when created randomlly;
+                 * 8. The number of dangerous areas should be increased according to levels; 
+                 * 9. The dangerous areas should be classified to different levels according to its denger;
+                 * 10.The player's score will lose relavant amount when the player collides with 
+                 *    different levels of dangerous areas;
+                 * 11.The destination area should be created in longer amount of time according
+                 *    to the level of the player and the spawned position ranges in canvas;  
+                 * 12.The player can move up ahead to  reach the destanition;
+                 */
+
+
+
+            }
+
+            // Collision dectection Way 2 --- Detect 4 points of the rectangle with the destanation
+            // if (((playerX >= destinationX && playerX <= (destinationX + destinationWidth))
+            //     && (playerY >= destinationY && playerY <= (destinationY + destinationHeight)))
+            //     || ((playerX + playerWidth) >= destinationX && (playerX + playerWidth) <= (destinationX + destinationWidth)
+            //         && ((playerY + playerHeight) >= destinationY && (playerY + playerHeight) <= (destinationY + destinationHeight)))
+            //     //...  // --- here remained 2 other points to be detected
+            // ) {
+            //     console.log("Win!");
+            // }
+
+
+
+
+        }
+
+        function drawScore(customColor) {
+            ctx.font = "16px Arial";
+            ctx.fillStyle = customColor;
+            ////context.fillText(text,xPos,yPos,maxWidthPX);
+            ctx.fillText("Score: " + score, 8, 20);
+        }
+
+        function drawLevel(customColor) {
+            ctx.font = "16px Arial";
+            ctx.fillStyle = customColor;
+            ////context.fillText(text,xPos,yPos,maxWidthPX);
+            ctx.fillText("Level: " + level, canvas.width / 2 - 23, 20);
+        }
+
+        function drawLives(customColor) {
+            ctx.font = "16px Arial";
+            ctx.fillStyle = customColor;
+            ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
+        }
+
+        function detecBorder() {
+
+            // console.log("Player X : " + playerX);
+            // console.log("Player Y : " + playerY);
+
+            if (playerX == 0 || playerX == (canvas.width - playerWidth + 1)
+                || playerY == (canvas.height - playerHeight + 1) || playerY == 0) {
+                if (rightPressed || leftPressed || upPressed || downPressed) {
+                    console.log("You arrived at border!");
+                    document.getElementById('explode_sound').play();
+                }
+            }
+        }
+
+
+        ////Beautiful buble background 
+        var howManyBubles = 13;
+        var bubles = [];
+        var bubleWidth = canvas.width;
+        var bubleHeight = canvas.height;
+
+        for (var i = 0; i < howManyBubles; i++) {
+            bubles.push([Math.random() * bubleWidth, Math.random() * bubleHeight, Math.random() * 100, Math.random() / 2]);
+        }
+
+        function drawBubleBG() {
+            for (var i = 0; i < howManyBubles; i++) {
+                ctx.fillStyle = 'rgba(255, 255, 255, ' + bubles[i][3] + ')';
+                ctx.beginPath();
+                ////context.arc(pixelPosX,pixelPosY,r,sAngle,eAngle,counterclockwise);
+                ctx.arc(bubles[i][0], bubles[i][1], bubles[i][2], 0, Math.PI * 2, true);
+                // ctx.stroke(); // Outline stroke 
+                ctx.closePath();
+                ctx.fill();
+            }
+        };
+
+        function moveBubleBG(speed) {
+            for (var i = 0; i < howManyBubles; i++) {
+                if (bubles[i][1] - bubles[i][2] > canvas.height) {
+                    bubles[i][0] = Math.random() * canvas.width;
+                    bubles[i][2] = Math.random() * 100;
+                    bubles[i][1] = 0 - bubles[i][2];
+                    bubles[i][3] = Math.random() / 2;
+                }
+                else {
+                    bubles[i][1] += speed;
+                }
+            }
+        };
+
+        function gameEndClear(customColor) {
+            ctx.fillStyle = customColor;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.rect(0, 0, canvas.width, canvas.height);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawCustomBG(customColor) {
+            ctx.fillStyle = customColor;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.rect(0, 0, canvas.width, canvas.height);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+
+        //// Golbally running functions
+        //Quite like Update method in Unity 
+        var animate = function () {
+
+            if (isLoadable) {
+                drawCustomBG(clearColor);
+                drawBubleBG();
+                drawScore(infoColor);
+                drawLevel(infoColor);
+                drawLives(infoColor);
+                detecBorder();
+                drawPlayer(playerColor);
+                drawDestination(destinationColor);
+                drawBall();
+                collisionDetection();
+
+
+
+                //drawDestinationRunner(Color.OliveDrab1);
+
+
+
+            }
+
+
+            requestAnimationFrame(animate);
+
+            interaction();
+
+            if (gameOver) {
+                return;
+            }
+        };
+
+
+        function loadingComplete() {
+            setTimeout(function () {
+                isLoadable = true;
+            }, 1)
+        }
+
+        setTimeout(loadGame, assestsLoadedTime * 20);
+
+
+
+
+        animate();
+
+
+
+
+
+    </script>
+</body>
+
+</html>
