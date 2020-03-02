@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>实现Canvas内地图片淡出效果</title>
+    <style>
+        body {
+            background: #eee;
+        }
+
+        #canvas {
+            background: #fff;
+            cursor: pointer;
+            margin-left: 20px;
+            margin-top: 50px;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+            -webkit-box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+            -moz-box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        #controls {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="controls"><input type="button" id="fadeBtn" value="点击按钮淡出图片" /></div>
+    <canvas id="canvas" width="800" height="520"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var fadeBtn = document.getElementById('fadeBtn');
+
+    var originalImageData = null; //保存最初的图像数据
+    var interval = null; //定时器
+    var onOff = true;
+    //初始化
+    var image = new Image();
+    image.src = 'star.png';
+
+    image.onload = function () {
+        drawOriginalImage();
+        originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+    }
+    //事件
+    fadeBtn.onclick = function () {
+        if (onOff) {
+            onOff = false;
+            fadeOut(context, context.getImageData(0, 0, canvas.width, canvas.height), 0, 0, 20, 1000 / 60);
+        }
+
+    }
+    //绘制原图
+    function drawOriginalImage() {
+        context.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
+    }
+    //淡出动画
+    function fadeOut(context, imageData, x, y, steps, millisecondsPerStep) {
+        var frame = 0;
+        var length = imageData.data.length;
+
+        interval = setInterval(function () {
+            frame++;
+            if (frame > steps) {
+                clearInterval(interval);
+                animationComplete();
+            } else {
+                increaseTransperency(imageData, steps);
+                context.putImageData(imageData, x, y);
+            }
+        }, millisecondsPerStep);
+    }
+
+    //每帧升高的透明度
+    function increaseTransperency(imageData, steps) {
+
+        var alpha;
+        var currentAlpha;
+        var alphaStep;
+        var length = imageData.data.length;
+
+        for (var i = 3; i < length; i += 4) {
+            alpha = originalImageData.data[i]; //最初的透明度
+
+            if (alpha > 0 && imageData.data[i] > 0) { //最初透明度及现在的透明度都不为0时
+                currentAlpha = imageData.data[i];
+                alphaStep = Math.ceil(alpha / steps);
+                if (currentAlpha - alphaStep > 0) { //直至最接近于0
+                    imageData.data[i] -= alphaStep;
+                } else { //最后等于0
+                    imageData.data[i] = 0;
+                }
+            }
+        }
+    }
+
+    //结束后
+    function animationComplete() {
+        setTimeout(function () {
+            drawOriginalImage();
+            onOff = true;
+        }, 1000)
+    }
+</script>
+
+</html>

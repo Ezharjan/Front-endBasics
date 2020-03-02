@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS实现抖动盒子</title>
+    <style>
+        @-webkit-keyframes shake {
+            0% {
+                -webkit-transform: translate(2px, 2px);
+            }
+
+            25% {
+                -webkit-transform: translate(-2px, -2px);
+            }
+
+            50% {
+                -webkit-transform: translate(0px, 0px);
+            }
+
+            75% {
+                -webkit-transform: translate(2px, -2px);
+            }
+
+            100% {
+                -webkit-transform: translate(-2px, 2px);
+            }
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translate(2px, 2px);
+            }
+
+            25% {
+                transform: translate(-2px, -2px);
+            }
+
+            50% {
+                transform: translate(0px, 0px);
+            }
+
+            75% {
+                transform: translate(2px, -2px);
+            }
+
+            100% {
+                transform: translate(-2px, 2px);
+            }
+        }
+
+        .shake {
+            position: relative;
+            top: 30px;
+            left: 100px;
+            width: 200px;
+            color: #ff0000;
+        }
+
+        .shake:hover {
+            -webkit-animation: shake 0.2s infinite;
+            animation: shake 0.2s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="shake">鼠标放到我身上我就会抖动</div>
+</body>
+
+</html>
