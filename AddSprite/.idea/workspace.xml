@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="bcf89047-2e52-4b9b-83cc-82e1cdd61e55" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1Yy9WZcjNpH79HsUDh1BoiblGZi" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../【Ready_to_hand_in/WechatGame" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\3rd-Grade\WebGL\Projects\AddSprite\Resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\3rd-Grade\WebGL\Projects\AddSprite\Resources" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bcf89047-2e52-4b9b-83cc-82e1cdd61e55" name="Default Changelist" comment="" />
+      <created>1583903999998</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1583903999998</updated>
+      <workItem from="1583904007483" duration="5621000" />
+      <workItem from="1583963611959" duration="728000" />
+      <workItem from="1583977020878" duration="503000" />
+      <workItem from="1585877928942" duration="692000" />
+      <workItem from="1586314174952" duration="1799000" />
+      <workItem from="1586345477063" duration="1682000" />
+      <workItem from="1588376021746" duration="636000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="265" y="154" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586345799904">
+      <screen x="0" y="0" width="1474" height="864" />
+    </state>
+    <state x="265" y="154" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1474.864@0.0.1474.864" timestamp="1586345799904" />
+    <state x="527" y="179" key="FileChooserDialogImpl" timestamp="1588377515138">
+      <screen x="0" y="0" width="1474" height="864" />
+    </state>
+    <state x="527" y="179" key="FileChooserDialogImpl/0.0.1474.864@0.0.1474.864" timestamp="1588377515138" />
+    <state x="549" y="173" key="FileChooserDialogImpl/0.0.1536.834@0.0.1536.834" timestamp="1583963678980" />
+  </component>
+</project>

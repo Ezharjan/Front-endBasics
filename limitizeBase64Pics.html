@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+    <img id="img" src=""></img>
+    <input id="originalImg" type="file" />
+    <script>
+        ///
+
+
+        function getImgByteSize(base64Data) {
+
+            if (base64Data) { //获取base64图片byte大小
+                const equalIndex = base64Data.indexOf('='); //获取=号下标
+                if (equalIndex > 0) {
+                    const str = base64Data.substring(0, equalIndex); //去除=号
+                    const strLength = str.length;
+                    const fileLength = strLength - (strLength / 8) * 2; //真实的图片byte大小
+                    size = Math.floor(fileLength); //向下取整
+                } else {
+                    const strLength = base64Data.length;
+                    const fileLength = strLength - (strLength / 8) * 2;
+                    size = Math.floor(fileLength); //向下取整
+                }
+            } else {
+                base64Data.size = null;
+            }
+            return size;
+        }
+
+
+        function convertImgToBase64(url, callback, outputFormat) {
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            var img = new Image;
+            img.crossOrigin = 'Anonymous';
+            img.onload = function() {
+                var width = img.width;
+                var height = img.height;
+                // 按比例压缩4倍
+                var rate = (width < height ? width / height : height / width) / 4;
+                canvas.width = width * rate;
+                canvas.height = height * rate; 
+                ctx.drawImage(img,  0,  0,  width,  height,  0,  0,  50,  50);
+                // ctx.drawImage(img, 0, 0, width, height, 0, 0, width * rate, height * rate);
+                var dataURL = canvas.toDataURL(outputFormat || 'image/png');
+                callback.call(this, dataURL);
+                canvas = null;
+            };
+            img.src = url;
+        }
+
+        function getObjectURL(file) {
+            var url = null;
+            if (window.createObjectURL != undefined) { // basic
+                url = window.createObjectURL(file);
+            } else if (window.URL != undefined) { // mozilla(firefox)
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) { // web_kit or chrome
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+        }
+
+
+
+        // 前端只需要给input file绑定这个change事件即可
+        var docel = document.getElementById('originalImg');
+
+        docel.onchange = function(event) {
+            var that = event.target;
+            console.log(that);
+            var imageUrl = getObjectURL(that.files[0]);
+            convertImgToBase64(imageUrl, function(base64Img) {
+                document.getElementById('img').src = base64Img;
+                // console.log(getImgByteSize(base64Img.split(",")[1]), 'B');
+                console.log(getImgByteSize(base64Img) + 'B');
+            });
+            event.preventDefault();
+        }
+
+
+
+        //////////////////////或者用这个
+        function compression(base64, widthSet, quality, callback) {
+            var newImage = new Image();
+            newImage.src = base64;
+            newImage.setAttribute("crossOrigin", 'Anonymous'); //url为外域时需要
+            var imgWidth, imgHeight;
+            newImage.onload = function() {
+                imgWidth = this.width;
+                imgHeight = this.height;
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                if (Math.max(imgWidth, imgHeight) > widthSet) {
+                    if (imgWidth > imgHeight) {
+                        canvas.width = widthSet;
+                        canvas.height = widthSet * imgHeight / imgWidth;
+                    } else {
+                        canvas.height = widthSet;
+                        canvas.width = widthSet * imgWidth / imgHeight;
+                    }
+                } else {
+                    canvas.width = imgWidth;
+                    canvas.height = imgHeight;
+                }
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+                // ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+                var base64 = canvas.toDataURL("image/jpeg", quality); //压缩语句,压缩系数0-1之间
+                callback(base64); //必须通过回调函数返回，否则无法及时拿到该值
+                // console.log('fruit:', base64);
+                // return base642;
+            }
+        }
+
+        ///
+    </script>
+</body>
+
+</html>

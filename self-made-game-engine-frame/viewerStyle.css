@@ -1,0 +1,17 @@
+.mycanvas {
+    display: block;
+    margin: auto auto;
+    background-color: bisque;
+    opacity: 1;
+}
+
+.startframe {
+    display: block;
+    margin: auto auto;
+    background-color: bisque;
+    opacity: 1;
+}
+
+body {
+    margin: 2;
+}

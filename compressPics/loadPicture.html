@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    .mycanvas {
+        display: block;
+        margin: auto auto;
+        background-color: bisque;
+        opacity: 1;
+    }
+
+    body {
+        margin: 2px;
+    }
+</style>
+
+<body>
+<script>
+    ///
+
+
+    function convertImgToBase64(url, callback, outputFormat) {
+        var canvas = document.createElement('CANVAS');
+        var ctx = canvas.getContext('2d');
+        var img = new Image;
+        img.crossOrigin = 'Anonymous';
+        img.onload = function () {
+            var width = img.width;
+            var height = img.height;
+            // 按比例压缩4倍
+            var rate = (width < height ? width / height : height / width) / 4;
+            canvas.width = width * rate;
+            canvas.height = height * rate;
+            ctx.drawImage(img, 0, 0, width, height, 0, 0, width * rate, height * rate);
+            var dataURL = canvas.toDataURL(outputFormat || 'image/png');
+            callback.call(this, dataURL);
+            canvas = null;
+        };
+        img.src = url;
+        return img.src;
+    }
+
+    var imgData = null;
+
+    try {
+        convertImgToBase64('./01.png', function (base64Img) {
+            // base64Img为转好的base64
+            // 放在img src直接前台展示(<img src="data:image/jpg;base64,/9j/4QMZRXh...." />)
+            // alert('Done');
+            // base64转图片不需要base64的前缀data:image/jpg;base64
+            alert(base64Img.split(",")[1]);
+            console.warn(base64Img);
+        });
+
+
+    } catch (ex) {
+        console.warn('Error occurred: ', ex);
+    }
+
+    console.log('Done!');
+
+
+    ///
+</script>
+</body>
+
+</html>

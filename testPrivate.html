@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="Document">Document</title>
+    <button width=800px height=800px onclick="btn_clicked()">closeWindow</button>
+</head>
+
+<body>
+
+
+    <script>
+        class Test {
+
+            #x = 1;
+            #y = 9;
+            constructor(x, y) {
+                this.#x = x;
+                this.#y = y;
+            }
+
+            myTest(x, y) {
+                this.#x = x;
+                this.#y = y;
+                console.warn(this.#x + "---" + this.#y);
+                return this.#x + 1 + this.#y;
+            }
+        }
+
+        var a = new Test();
+        var b = a.myTest(1, 1);
+        console.log("result"+b);
+//使用下面的方式会出现内部私有成员访问不到的情况
+//        console.log("Private property x : "+a.#x);        
+
+
+
+
+
+    </script>
+
+
+
+
+</body>
+
+</html>
